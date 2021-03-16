@@ -37,10 +37,10 @@ public class PlayerWeekStats
 [Serializable]
 public class UpdPlayer
 {
-    public string CallerID = "JMF";
-    public string CallerPW = "JMF";
-    public string Nickname = "Jack";
-    public string Password = "pass";
+    public string CallerID = "JMF"; //Hardcoded, mas deveria mudar poderia atribuir um id automático
+    public string CallerPW = "JMF"; //Ao cadastra o usuário, ou criar um com base no dispositivo
+    public string Nickname = "";
+    public string Password = "";
     public int[] NewStats = { 0, 0, 0, 0, 0, 0};
 }
 
@@ -117,7 +117,7 @@ public class TTTAPIHelper : MonoBehaviour
             callConfig.gameObject.SetActive(false);
             TelaCreateUser.gameObject.SetActive(true);
         }
-        /* //DESCOMENTAR (OU COMENTAR) AQUI PARA DESATIVAR A CHAMADA À API dos TOP3
+        //* //DESCOMENTAR (OU COMENTAR) AQUI PARA DESATIVAR A CHAMADA À API dos TOP3
         //Deveria fazer chamadas periódicas para atualizar, mas fica para a próxima.
         //Por enquanto vai atualizar só uma vez na inicialização da Scene
         CallApiGet(); //Atuliza TOP SCORES
