@@ -5,6 +5,18 @@ using System.IO;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+
+/// <summary>
+/// MUITO BEM, AQUI ERA PARA FAZER AS COISAS MAIS SEPARADAS:
+///     EM CAMADAS
+///     EM DIFERENTES ARQUIVOS
+///     MELHORAR A REUTILIZAÇÃO DE CÓDIGO
+///     E COM MAIS VEFIFICAÇÕES
+/// Mas, não vai dar tempo não :-)
+/// Preferi me concentrar nas features aparentes e deixar os bastidores bagunçados mesmo
+/// Um, dia, com tempo, quem sabe eu arrume talvez eu use o tic-tac-toe como exemplo de um tutorial/Template
+/// </summary>
 
 [Serializable]
 public class PlayerTotStats
@@ -13,19 +25,24 @@ public class PlayerTotStats
     public string StOne;
     public string StTwo;
 }
-
+[Serializable]
+public class PlayerWeekStats
+{
+    public string Name;
+    public string WSO;
+    public string WSTw;
+    public string WSTh;
+    public string WSF;
+}
 [Serializable]
 public class UpdPlayer
 {
-
     public string CallerID = "JMF";
     public string CallerPW = "JMF";
     public string Nickname = "Jack";
     public string Password = "pass";
-    public int[] NewStats = { 4, 2, 1, 2, 1 };
+    public int[] NewStats = { 0, 0, 0, 0, 0, 0};
 }
-
-
 
 public static class JsonHelper
 {
@@ -57,66 +74,394 @@ public static class JsonHelper
 }
 
 public class TTTAPIHelper : MonoBehaviour
-{
-    // Start is called before the first frame update
+{   //AQUI VALERIA A PENA USAR UM "FOLDABLE" INSPECTOR... quando tiver mais tempo
+    [Header("Top Scores")]
+    [SerializeField] Text[] Players;
+    [SerializeField] Text[] Scores;
+    [SerializeField] Text[] PlayersTG;
+    [SerializeField] Text[] ScoresTG;
+    [SerializeField] Text[] PlayersWW;
+    [SerializeField] Text[] ScoresWW;
+    [SerializeField] Text[] PlayersWG;
+    [SerializeField] Text[] ScoresWG;
+    [Space(10)]
+    [Header("Create User")]
+    [SerializeField] Canvas TelaCreateUser;
+    [SerializeField] Text CreateUser;
+    [SerializeField] InputField newUserNick;
+    [SerializeField] InputField newPassword;
+    [SerializeField] Button Create;
+    [Space(10)]
+    [Header("Delete User")]
+    [SerializeField] Text DeleteUser;
+    [SerializeField] Toggle ConfirmaDelete;
+    [SerializeField] Text DeleteUserMessage;
+    [SerializeField] Canvas CanvasDelete;
+    [SerializeField] InputField UserToDelete;
+    [Space(10)]
+    [Header("Configurações")]
+    [SerializeField] Canvas CanvasConfig;
+    [SerializeField] Button callConfig;
     void Start()
     {
-
-        //StartCoroutine(GetRequest());
-        //StartCoroutine(Get());
-       // StartCoroutine(Post());
-        //StartCoroutine(Put());
-
-        StartCoroutine(Delete());
-
-        /*
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format("https://jmfwebapi2021.azurewebsites.net/API/TopWinners"));
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        StreamReader reader = new StreamReader(response.GetResponseStream());
-        string jsonResponse = "{\"Items\":" + reader.ReadToEnd() + "}";
-        PlayerTotStats[] info = JsonHelper.FromJson<PlayerTotStats>(jsonResponse);
-
-        
-
-        Debug.Log($"oi {info[0].Name}, {info[0].StOne}, {info[0].StTwo}");
-        Debug.Log($"oi {info[1].Name}, {info[1].StOne}, {info[1].StTwo}");
-        Debug.Log($"oi {info[2].Name}, {info[2].StOne}, {info[2].StTwo}");
-        */
+        Create.onClick.AddListener(ActionCreatePlayer);
+        if (TTTPlayerPrefs.IsRegistrado())
+        {
+            TTTPlayerPrefs.RecuperaTTTPrefs();
+            TelaCreateUser.gameObject.SetActive(false);
+            callConfig.gameObject.SetActive(true);
+            //Carregar Customização
+        }
+        else
+        {
+            callConfig.gameObject.SetActive(false);
+            TelaCreateUser.gameObject.SetActive(true);
+        }
+        /* //DESCOMENTAR (OU COMENTAR) AQUI PARA DESATIVAR A CHAMADA À API dos TOP3
+        //Deveria fazer chamadas periódicas para atualizar, mas fica para a próxima.
+        //Por enquanto vai atualizar só uma vez na inicialização da Scene
+        CallApiGet(); //Atuliza TOP SCORES
+        //Também deveria guardar uma cópia local dos Top3 para o caso de falta de conexão... mas...        
+        //*/
     }
 
+    public void AcaoAbrirExcluir()//Reseta tela de excluir jogador
+    {   //No caso do usurário ter modificado e desistido, precisa limpar tudo
+        ConfirmaDelete.isOn = false;
+        DeleteUser.gameObject.SetActive(false);
+        DeleteUserMessage.text = "Confirme a exclução cllicando\nna caixa e no botão Excluir.";
+        UserToDelete.text = TTTPlayerPrefs.TTTNickname;
+    }
 
-
-
-    //UnityWebRequest delete = UnityWebRequest.Delete("http://www.myserver.com/foo.txt");
-
-
-    IEnumerator Delete()
+    public void CallApiGet()//Chama APIs dos Top3
     {
-
-        WWWForm form = new WWWForm();
-        form.AddField("CallerID", "JMF");
-        form.AddField("CallerPW", "JMF");
-        form.AddField("Nickname", "Github1");
-        form.AddField("Password", "JimKirk95");
-        form.AddField("DeleteID", "DJMF");
-        form.AddField("DeletePW", "DJMF");
-        using (UnityWebRequest www = UnityWebRequest.Post("https://jmfwebupdt2021.azurewebsites.net/API/UpdScores/42", form))
+        int length = (int)Math.Min(Players.Length, Scores.Length);
+        for (int i = 0; i < length; i++)
         {
-            www.method = "DELETE";
-            //www.SetRequestHeader("X-HTTP-Method-Override", "PATCH");
+            Players[i].text = "Loading winners ...";
+            Scores[i].text = "...";
+        }
+        length = (int)Math.Min(PlayersTG.Length, ScoresTG.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersTG[i].text = "Loading players ...";
+            ScoresTG[i].text = "...";
+        }
+        length = (int)Math.Min(PlayersWG.Length, ScoresWG.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersWG[i].text = "Loading wplayers ...";
+            ScoresWG[i].text = ".";
+        }
+        length = (int)Math.Min(PlayersWW.Length, ScoresWW.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersWW[i].text = "Loading wwinners ...";
+            ScoresWW[i].text = ".";
+        }
+        StartCoroutine(ApiGet("https://jmfwebapi2021.azurewebsites.net/API/TopWinners", CallbackActionGet));
+        StartCoroutine(ApiGet("https://jmfwebapi2021.azurewebsites.net/API/TopPlayers", CallbackActionGetTG));
+        StartCoroutine(ApiGet("https://jmfwebapi2021.azurewebsites.net/API/WeekPlayers", CallbackActionGetWG));
+        StartCoroutine(ApiGet("https://jmfwebapi2021.azurewebsites.net/API/WeekWinners", CallbackActionGetWW));
+    }
+    public IEnumerator ApiGet(string Uri, System.Action<bool, string> callback) //GET = Read / SELECT
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(Uri))
+        {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log(www.error);
-                Debug.Log("Dan: " + www.error);
-                Debug.Log("Da2: " + www.downloadHandler.text);
-
+                callback(false, www.error);
             }
             else
             {
-                Debug.Log("Form upload complete!");
-                Debug.Log(":\nReceived: " + www.downloadHandler.text);
+                string jsonResponse = "{\"Items\":" + www.downloadHandler.text + "}";
+                callback(true, jsonResponse);
+            }
+        }
+    }
+    void CallbackActionGet(bool isSuccess, string jsonData) //Atualiza top Winners
+    {
+        int length = (int)Math.Min(Players.Length, Scores.Length);
+        for (int i = 0; i < length; i++)
+        {
+            Players[i].text = "No winner...";
+            Scores[i].text = "..";
+        }
+        if (isSuccess)
+        {
+            PlayerTotStats[] info = JsonHelper.FromJson<PlayerTotStats>(jsonData);
+            length = (int)Math.Min(info.Length, length);
+            for (int i = 0; i < length; i++)
+            {
+                Players[i].text = info[i].Name;
+                Scores[i].text = info[i].StOne;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < length; i++)
+            {
+                Players[i].text = "Sem conexão...";
+                Scores[i].text = "..";
+            }
+        }
+    }
+    void CallbackActionGetTG(bool isSuccess, string jsonData) //Atualiza top Players
+    {
+        int length = (int)Math.Min(PlayersTG.Length, ScoresTG.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersTG[i].text = "No player...";
+            ScoresTG[i].text = "..";
+        }
+        if (isSuccess)
+        {
+            PlayerTotStats[] info = JsonHelper.FromJson<PlayerTotStats>(jsonData);
+            length = (int)Math.Min(info.Length, length);
+            for (int i = 0; i < length; i++)
+            {
+                PlayersTG[i].text = info[i].Name;
+                ScoresTG[i].text = info[i].StOne;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < length; i++)
+            {
+                PlayersTG[i].text = "Sem conexão...";
+                ScoresTG[i].text = "..";
+            }
+        }
+    }
+    void CallbackActionGetWG(bool isSuccess, string jsonData)  //Atualiza week Players
+    {
+        int length = (int)Math.Min(PlayersWG.Length, ScoresWG.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersWG[i].text = "No player...";
+            ScoresWG[i].text = "..";
+        }
+        if (isSuccess)
+        {
 
+            PlayerWeekStats[] info = JsonHelper.FromJson<PlayerWeekStats>(jsonData);
+            length = (int)Math.Min(info.Length, length);
+            for (int i = 0; i < length; i++)
+            {
+                PlayersWG[i].text = info[i].Name;
+                ScoresWG[i].text = info[i].WSO;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < length; i++)
+            {
+                PlayersWG[i].text = "Sem conexão...";
+                ScoresWG[i].text = "..";
+            }
+        }
+    }
+    void CallbackActionGetWW(bool isSuccess, string jsonData) //Atualiza week Winners 
+    {
+        int length = (int)Math.Min(PlayersWW.Length, ScoresWW.Length);
+        for (int i = 0; i < length; i++)
+        {
+            PlayersWW[i].text = "No winner...";
+            ScoresWW[i].text = "..";
+        }
+        if (isSuccess)
+        {
+
+            PlayerWeekStats[] info = JsonHelper.FromJson<PlayerWeekStats>(jsonData);
+            length = (int)Math.Min(info.Length, length);
+            for (int i = 0; i < length; i++)
+            {
+                PlayersWW[i].text = info[i].Name;
+                ScoresWW[i].text = info[i].WSO;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < length; i++)
+            {
+                PlayersWW[i].text = "Sem conexão...";
+                ScoresWW[i].text = "..";
+            }
+        }
+    }
+
+    public void ActionRestablishMessage(string value) //Reseta mensagem de criação de jogador 
+    {
+        newUserNick.onValueChanged.RemoveListener(ActionRestablishMessage);
+        newPassword.onValueChanged.RemoveListener(ActionRestablishMessage);
+        CreateUser.text = $"Entre um Nick e uma Senha\nE clique em Criar";
+        Create.gameObject.SetActive(true); //reabilita botão de criar jogador
+    }
+
+    public void ActionCreatePlayer() //Botão de criar jogador
+    {   //Faz verificações e chama função
+        Create.gameObject.SetActive(false);//Desabilita próprio botão para não ser clicado 2 vezes
+        if ((newUserNick.text.Length > 0) && (newPassword.text.Length > 0))
+        {
+            newUserNick.enabled = false; //trava input field para usuário não modificar
+            newPassword.enabled = false; //trava input field para usuário não modificar
+            CreateUser.text = $"Registrando usuário\nPor favor aguarde...";
+            CallApiPost();//Chama função de criação
+        }
+        else
+        {
+            if (newUserNick.text.Length == 0)
+            {
+                if (newPassword.text.Length == 0)
+                {
+                    CreateUser.text = $"Nick e senha não podem ser vazios\n Entre novo nick e senha";
+                    newUserNick.onValueChanged.AddListener(ActionRestablishMessage);
+                    newPassword.onValueChanged.AddListener(ActionRestablishMessage);
+                }
+                else //só nick vazio
+                {
+                    CreateUser.text = $"O nick não pode ser vazio\nEntre nick com 1 a 20 caracteres";
+                    newUserNick.onValueChanged.AddListener(ActionRestablishMessage);
+                }
+            }
+            else // Só password vazia
+            {
+                CreateUser.text = $"A senha não pode ser vazia\nEntre senha com 1 a 20 caracteres";
+                newPassword.onValueChanged.AddListener(ActionRestablishMessage);
+            }
+        }
+    }
+    void CallApiPost() //Prepara dados e chama corrotina da API
+    {
+        WWWForm json = new WWWForm();
+        json.AddField("CallerID", "JMF"); //Deveria buscar credenciais online, de outra API, ou de um GSheet
+        json.AddField("CallerPW", "JMF"); //Mas fica para a próxima também... aqui vai hardcoded
+        json.AddField("Nickname", newUserNick.text);
+        json.AddField("Password", newPassword.text);
+        StartCoroutine(ApiPost("https://jmfwebupdt2021.azurewebsites.net/API/NewPlayer", json, CallbackActionPost));
+    }
+    public IEnumerator ApiPost(string Uri, WWWForm jsonData, System.Action<bool, string> callback) //POST = Create / INSERT
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(Uri, jsonData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                callback(false, $"{www.error} xJMFx {www.downloadHandler.text}");
+            }
+            else
+            {
+                callback(true, www.downloadHandler.text);
+            }
+        }
+    }
+    void CallbackActionPost(bool isSuccess, string message) //Processa depois da chamada da API de criação
+    {
+        if (isSuccess)
+        {
+            TTTPlayerPrefs.Registra(newUserNick.text, newPassword.text);
+            newUserNick.enabled = true;
+            newPassword.enabled = true;
+            Create.gameObject.SetActive(true); //reativa botão de criação pensando em nova criação
+            TelaCreateUser.gameObject.SetActive(false); //Fecha tela de criação
+            callConfig.gameObject.SetActive(true); //Habilita botão de configurações  
+        }
+        else
+        {
+            newUserNick.enabled = true;
+            newPassword.enabled = true;
+            string[] splitter = { " xJMFx " };
+            string[] error = message.Split(splitter, StringSplitOptions.None);
+            if (error.Length > 1)
+            {
+                if (error[1].Contains("Nickname já usado"))
+                {//deveria fazer mais verificações e retornar mensagens diferentes...
+                 //Mas, pra demo/teste essa já está bom.
+                    CreateUser.text = $"Usuário já usado\n por favor escolha outro";
+                    newUserNick.onValueChanged.AddListener(ActionRestablishMessage);
+                }
+                else
+                {
+                    CreateUser.text = $"Erro inesperado, tente outro nick/senha\n{error[1]}!";
+                    newUserNick.onValueChanged.AddListener(ActionRestablishMessage);
+                    newPassword.onValueChanged.AddListener(ActionRestablishMessage);
+                }
+            }
+            else
+            {
+                CreateUser.text = $"Erro desconhecido, tente outro nick/senha\n{error[0]}";
+                newUserNick.onValueChanged.AddListener(ActionRestablishMessage);
+                newPassword.onValueChanged.AddListener(ActionRestablishMessage);
+            }
+        }
+    }
+
+    public void ActionDeletePlayer() //Respota ao botão de deletar usuário
+    {
+        if (ConfirmaDelete.isOn) //Verifica confirmação
+        {
+            DeleteUserMessage.text = "Excluindo usuário\naguarde...";
+            CallApiDelete();
+        }
+        else
+        {
+            DeleteUser.gameObject.SetActive(true); //Mostra aviso adicional
+        }
+    }
+    void CallApiDelete() //Prepara chamada da API
+    {
+        WWWForm JSONDelete = new WWWForm();
+        JSONDelete.AddField("CallerID", "JMF"); //Deveria buscar credenciais online, de outra API, ou de um GSheet
+        JSONDelete.AddField("CallerPW", "JMF"); //Mas fica para a próxima também... aqui vai hardcoded
+        JSONDelete.AddField("Nickname", TTTPlayerPrefs.TTTNickname);
+        JSONDelete.AddField("Password", TTTPlayerPrefs.TTTPassword);
+        JSONDelete.AddField("DeleteID", "DJMF");
+        JSONDelete.AddField("DeletePW", "DJMF");        
+        StartCoroutine(ApiDelete("https://jmfwebupdt2021.azurewebsites.net/API/UpdScores/42", JSONDelete, CallbackActionDelete));
+    }
+    public IEnumerator ApiDelete(string Uri, WWWForm jsonData, System.Action<bool, string> callback) //DELETE = Delete
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(Uri, jsonData))
+        {   //Precisa criar como POST, com BODY e mudar para DELETE
+            www.method = "DELETE"; //Truquezinho por limitação do UnityWebRequest
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                callback(false, $"{www.error} xJMFx {www.downloadHandler.text}");
+            }
+            else
+            {
+                callback(true, www.downloadHandler.text);
+            }
+        }
+    }
+    void CallbackActionDelete(bool isSuccess, string message) //Processa depois do DELETe
+    {
+        if (isSuccess)
+        {
+            ConfirmaDelete.isOn = false; //Limpa Canvas para outro delete posterior
+            DeleteUser.gameObject.SetActive(false); //Texto adicional de aviso
+            DeleteUserMessage.text = "Confirme a exclução cllicando\nna caixa e no botão Excluir.";
+            CanvasDelete.gameObject.SetActive(false); //Fecha tela de exclusão
+            TTTPlayerPrefs.ApagaRegistro(); //Apaga registro do usuário
+            CanvasConfig.gameObject.SetActive(false); //Fecha canvas de config
+            newUserNick.text = "";
+            newPassword.text = "";
+            callConfig.gameObject.SetActive(false);
+            TelaCreateUser.gameObject.SetActive(true); //Abre tela para criar novo usuário
+        }
+        else
+        {
+            string[] splitter = { " xJMFx " };
+            string[] error = message.Split(splitter, StringSplitOptions.None);
+            if (error.Length > 1)
+            {
+                DeleteUserMessage.text = $"{error[0]}\n{error[1]}!";
+            }
+            else
+            {
+                DeleteUserMessage.text = $"Erro desconhecido\n{error[0]}";
             }
         }
     }
@@ -124,14 +469,14 @@ public class TTTAPIHelper : MonoBehaviour
 
 
 
-    IEnumerator Put()
+
+
+
+    public IEnumerator APIPut() //PUT = Update / UPDATE
     {
-
         UpdPlayer player = new UpdPlayer();
-        string json =  JsonUtility.ToJson(player);
-        byte[] myData = System.Text.Encoding.UTF8.GetBytes(json);
-        Debug.Log("OI: " + json);
-
+        //Informações sobre o Player ??????????????
+        string json = JsonUtility.ToJson(player);
         using (UnityWebRequest www = UnityWebRequest.Put("https://jmfwebupdt2021.azurewebsites.net/API/UpdScores/42", json))
         {
             www.SetRequestHeader("Content-Type", "application/json");
@@ -154,84 +499,13 @@ public class TTTAPIHelper : MonoBehaviour
 
 
 
-    IEnumerator Post()
-    {
-      
-        WWWForm form = new WWWForm();
-        form.AddField("CallerID", "JMF");
-        form.AddField("CallerPW", "JMF");
-        form.AddField("Nickname", "Github1");
-        form.AddField("Password", "JimKirk95"); ;
-        using (UnityWebRequest www = UnityWebRequest.Post("https://jmfwebupdt2021.azurewebsites.net/API/NewPlayer", form))
-        {
-            yield return www.SendWebRequest();
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                Debug.Log("Form upload complete!");
-                Debug.Log(":\nReceived: " + www.downloadHandler.text);
-
-            }
-        }
-    }
-
-
-    IEnumerator GetRequest()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://jmfwebapi2021.azurewebsites.net/API/TopWinners"))
-        {
-            yield return webRequest.SendWebRequest(); 
-            switch (webRequest.result)
-            {
-                case UnityWebRequest.Result.ConnectionError:
-                case UnityWebRequest.Result.DataProcessingError:
-                    Debug.LogError(": Error: " + webRequest.error);
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    Debug.LogError(": HTTP Error: " + webRequest.error);
-                    break;
-                case UnityWebRequest.Result.Success:
-                    Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
-                    string jsonResponse = "{\"Items\":" + webRequest.downloadHandler.text + "}";
-                    PlayerTotStats[] info = JsonHelper.FromJson<PlayerTotStats>(jsonResponse);
-                    Debug.Log($"oi {info[0].Name}, {info[0].StOne}, {info[0].StTwo}");
-                    Debug.Log($"oi {info[1].Name}, {info[1].StOne}, {info[1].StTwo}");
-                    Debug.Log($"oi {info[2].Name}, {info[2].StOne}, {info[2].StTwo}");
-                    break;
-            }
-        }
-    }
-
-
-    IEnumerator Get()
-    {
-        using (UnityWebRequest www = UnityWebRequest.Get("https://jmfwebapi2021.azurewebsites.net/API/TopWinners"))
-        {
-            yield return www.SendWebRequest();
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                Debug.Log("Upload complete!: " + www.downloadHandler.text);
-                string jsonResponse = "{\"Items\":" + www.downloadHandler.text + "}";
-                PlayerTotStats[] info = JsonHelper.FromJson<PlayerTotStats>(jsonResponse);
-                Debug.Log($"oi {info[0].Name}, {info[0].StOne}, {info[0].StTwo}");
-                Debug.Log($"oi {info[1].Name}, {info[1].StOne}, {info[1].StTwo}");
-                Debug.Log($"oi {info[2].Name}, {info[2].StOne}, {info[2].StTwo}");
-            }
-        }
-    }
 
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
+
+
+
+
 }
