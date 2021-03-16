@@ -120,7 +120,7 @@ public class TTTAPIHelper : MonoBehaviour
         //* //DESCOMENTAR (OU COMENTAR) AQUI PARA DESATIVAR A CHAMADA À API dos TOP3
         //Deveria fazer chamadas periódicas para atualizar, mas fica para a próxima.
         //Por enquanto vai atualizar só uma vez na inicialização da Scene
-        CallApiGet(); //Atuliza TOP SCORES
+       // CallApiGet(); //Atuliza TOP SCORES
         //Também deveria guardar uma cópia local dos Top3 para o caso de falta de conexão... mas...        
         //*/
     }

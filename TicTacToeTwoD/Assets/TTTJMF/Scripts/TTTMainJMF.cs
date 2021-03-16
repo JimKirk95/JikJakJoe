@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class TTTMainJMF : MonoBehaviour
 {
+    [SerializeField] Text DebugTXT;
     [SerializeField] Text PlayerTXT;
     [SerializeField]  Sprite Branco;
     [SerializeField] List<Sprite> XSprites;
@@ -16,7 +17,6 @@ public class TTTMainJMF : MonoBehaviour
     [SerializeField] Button[] LinhaTres;
     Button[][] Matriz = new Button[3][];
 
-    UpdPlayer playerStats = new UpdPlayer();
 
     int[,] array = {{0,0,0},
                     {0,0,0},
@@ -236,6 +236,7 @@ public class TTTMainJMF : MonoBehaviour
     //DEVIA COLOCAR EM UMA OUTRA CLASSE... mas isso consome tempo... então vai aqui mesmo :-)
     void CallApiPut(int points) //Atualização de estatísticas do jogador
     {
+        UpdPlayer playerStats = new UpdPlayer();
         //0 = derrota;
         //1 = empate;
         //3 = vitória;
@@ -284,8 +285,14 @@ public class TTTMainJMF : MonoBehaviour
     {
         if (isSuccess)
         {
+
+            DebugTXT.text = "Update... ";
+
+            //Porque eu não usei um json aqui????????? também podia usar Regex, mas faria mais sentido usar o json...
+            //Realmente não entendi porque não usei... maus hábitos :-D.
             string[] newStats = message.Split('[', ']')[1].Split(',');
-//            Debug.Log($"J: {newStats[0]} A: {newStats[1]} B: {newStats[2]} c: {newStats[3]} d: {newStats[4]} e: {newStats[5]} ");
+            //            Debug.Log($"J: {newStats[0]} A: {newStats[1]} B: {newStats[2]} c: {newStats[3]} d: {newStats[4]} e: {newStats[5]} ");
+
             TTTPlayerPrefs.TTTTG = int.Parse(newStats[0]);
             TTTPlayerPrefs.TTTTW = int.Parse(newStats[1]);
             TTTPlayerPrefs.TTTTD = int.Parse(newStats[2]);
@@ -293,6 +300,7 @@ public class TTTMainJMF : MonoBehaviour
             TTTPlayerPrefs.TTTWW = int.Parse(newStats[4]);
             TTTPlayerPrefs.TTTWD = int.Parse(newStats[5]);
             TTTPlayerPrefs.SaveNewStats();
+            DebugTXT.text += " OK ";
 
         }
         else
@@ -303,10 +311,12 @@ public class TTTMainJMF : MonoBehaviour
             string[] error = message.Split(splitter, StringSplitOptions.None);
             if (error.Length > 1)
             {
+                DebugTXT.text = $"{error[0]}\n{error[1]}!";
 //                Debug.Log($"{error[0]}\n{error[1]}!");
             }
             else
             {
+                DebugTXT.text = $"{error[0]}!";
 //                Debug.Log($"{error[0]}!");
             }
         }
