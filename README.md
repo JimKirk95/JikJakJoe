@@ -39,7 +39,34 @@ As "_skins_" utilizadas são do pixabay: https://pixabay.com/
 - 👀 Projeto baseado no modelo 2D do Unity
 - 👀 A API deve funcionar até 10 de abril de 2021, pois depende de um SQL Server rodando em Máquina Virtual Azure.
 
+
+
+
 ---
+
+## Screens
+
+<table style="width:100%">
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Cadastro.jpg" width = 200></td>
+    <td><p>Tela inicial de criação de usuário.</p>
+      <p>Aparece apenas se não tiver usuário cadastrado</p>
+      <p>O usuário pode optar por se cadastrar ou por continuar sem cadastro</p>
+      <p>Se continuar sem cadastro, poderá jogar e ver o ranking dos melhores, mas seu progresso não será registrado e não será possível desbloquear <i>skins</i></p></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config1.jpg" width = 200></td>
+    <td>Descrição da tela 2</td>
+  </tr>
+</table>
+
+
+
+
+
+
+---
+
 
 <!---
 ## Autor
