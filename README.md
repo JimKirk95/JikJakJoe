@@ -93,26 +93,32 @@ As "_skins_" utilizadas são do pixabay: https://pixabay.com/
       O cadastro pode ser excluído
     </td>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config2.jpg" width = 200></td>
-    <td>Após ganhar moedas<br>
-      ganhando ou empatando,<br>
-      itens são desbloqueados
+    <td>Ganhando eu empatando<br>
+      o jogador ganhar moedas<br>
+      e pode desbloquear <i>skins</i>
       </td>
   </tr>
 
   <tr>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config3.jpg" width = 200></td>
-    <td>E novas <i>skins</i><br>
-      podem ser escolhidas
+    <td>E pode escolhar <br>
+      uma <i>skin</i> pra O<br>
+      e outra pro X
     </td>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/jogolog2.jpg" width = 200></td>
-    <td>E usadas no jogo</td>
+    <td>As novas <i>skins</i><br>
+  são usadas no jogo
+  </td>
   </tr>
 
 
   <tr>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/ranking2.jpg" width = 200></td>
     <td>À medida que joga<br>
-      o jogador aparece no ranking
+      o jogador aparece no ranking<br>
+      Olha o nosso Homer:<br>
+      Terceiro em vitórias<br>
+      e segundo em jogos na semana
     </td>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config4.jpg" width = 200></td>
     <td>E pode desbloquear<br>
