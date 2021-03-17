@@ -94,14 +94,14 @@ As "_skins_" utilizadas são do pixabay: https://pixabay.com/
     </td>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config2.jpg" width = 200></td>
     <td>Ganhando eu empatando<br>
-      o jogador ganhar moedas<br>
+      o jogador ganha moedas<br>
       e pode desbloquear <i>skins</i>
       </td>
   </tr>
 
   <tr>
     <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config3.jpg" width = 200></td>
-    <td>E pode escolhar <br>
+    <td>E pode escolher <br>
       uma <i>skin</i> pra O<br>
       e outra pro X
     </td>
