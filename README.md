@@ -48,26 +48,102 @@ As "_skins_" utilizadas são do pixabay: https://pixabay.com/
 
 <table style="width:100%">
   <tr>
-    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Cadastro.jpg" width = 300></td>
-    <td><p>Tela inicial de criação de usuário.</p>
-      <p>Aparece apenas se não tiver usuário cadastrado</p>
-      <p>O usuário pode optar por se cadastrar ou por continuar sem cadastro</p>
-      <p>Se continuar sem cadastro, poderá jogar e ver o ranking dos melhores, mas seu progresso não será registrado e não será possível desbloquear <i>skins</i></p></td>
-    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config1.jpg" width = 300></td>
-    <td>Descrição da tela 2 só precia aumentas erra descira</td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Cadastro.jpg" width = 200></td>
+    <td>Tela inicial:<br>
+      Pode criar usuário<br>
+      Ou entrar sem usuário
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/jogo.jpg" width = 200></td>
+    <td> Entrando sem usuário:<br>
+      Pode jogar<br>
+      E ver o ranking<br>
+      Mas não tem configurações
+    </td>
   </tr>
 
   <tr>
-    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Cadastro.jpg" width = 300></td>
-    <td><p>Tela inicial de criação de usuário.</p>
-      <p>Aparece apenas se não tiver usuário cadastrado</p>
-      <p>O usuário pode optar por se cadastrar ou por continuar sem cadastro</p>
-      <p>Se continuar sem cadastro, poderá jogar e ver o ranking dos melhores, mas seu progresso não será registrado e não será possível desbloquear <i>skins</i></p></td>
-    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config1.jpg" width = 300></td>
-    <td>Descrição da tela 2<br> br também funciona? </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/ranking.jpg" width = 200></td>
+    <td>O ranking mostra:<br>
+      Top 3 Winners;<br>
+      Week Winners;<br>
+      Top 3 Players;<br>
+      Week Players
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/jogo1.jpg" width = 200></td>
+    <td>E o jogo funciona normalmente
+      </td>
   </tr>
 
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/JogoLog.jpg" width = 200></td>
+    <td>Com o usuário criado<br>
+      Pode-se acessar as configurações
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config1.jpg" width = 200></td>
+    <td>Nas configurações<br>
+      <i>Skings</i> podem ser desbloqueados<br>
+      com moedas do jogo
+    </td>
+  </tr>
+
+
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/delete.jpg" width = 200></td>
+    <td>A partir das configurações<br>
+      O cadastro pode ser excluído
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config2.jpg" width = 200></td>
+    <td>Após ganhar moedas<br>
+      ganhando ou empatando,<br>
+      itens são desbloqueados
+      </td>
+  </tr>
+
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/config3.jpg" width = 200></td>
+    <td>E novas <i>skins</i><br>
+      podem ser escolhidas
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/jogolog2.jpg" width = 200></td>
+    <td>E usadas no jogo</td>
+  </tr>
+
+
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/ranking2.jpg" width = 200></td>
+    <td>À medida que joga<br>
+      o jogador aparece no ranking
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/Config4.jpg" width = 200></td>
+    <td>E pode desbloquear<br>
+      mais <i>skins</i></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/JogoLog3.jpg" width = 200></td>
+    <td>Quanto mais jogar<br>
+      mais <i>skins</i> terá
+    </td>
+    <td><img src="https://github.com/JimKirk95/images/blob/a1e572ec8d43878782f9db5a716434781ce421a9/ranking3.jpg" width = 200></td>
+    <td>E subirá<br>
+      mais ainda no ranking</td>
+  </tr>
+
+
 </table>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
