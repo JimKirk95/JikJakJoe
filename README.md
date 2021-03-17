@@ -11,14 +11,20 @@
 ## Simple TicTacToe in Unity2D
 
 ---
-Aplicativo baseado no Tic-Tac-Toe de 
+Aplicativo baseado no Tic-Tac-Toe de Musti1729: https://github.com/Musti1729/Tic-Tac-Toe
 
-Este aplicativo utiliza uma API hospedada em Azure para guardar as informações do jogador e para consultar os Top Players:
+
+Este aplicativo utiliza APIs hospedadas em Azure para guardar as informações do jogador e para consultar os Top Players:
+
+https://github.com/JimKirk95/JMFWebAppDemo
+
 https://github.com/JimKirk95/JMFWebAppUpdtDemo
+
+
 
 Além deste ranking com os Top 3  🥇🥈🥉 de todos os tempos e os Top 3 🥇🥈🥉 da semana, este aplicativo também implementa um sistema de recompensas e um sistema de compras/desbloqueio.
 
-A cada vitória do Player 1, o jogador ganhar 3 🌕 (moedas, não luas) e a cada empate o jogador ganhar 1 🌕.
+A cada vitória do Player 1, o jogador ganha 3 🌕 (moedas, não luas) e a cada empate o jogador ganhar 1 🌕.
 
 As 🌕 podem ser usadas para liberar novos "_skins_" Os e Xs.
 
@@ -27,8 +33,8 @@ Ou seja, com 18 🌕 (que podem ser obtidas com 6 vitórias) é possível desblo
 
 ---
 
-- 👀 Projeto desenvolvido em Unity 
-- 👀 Projeto baseado no modelo "Aplicativo Web ASP.NET (.NET Framework)" com C#
+- 👀 Projeto desenvolvido em Unity 2020.2.2f1 com C#
+- 👀 Projeto baseado no modelo 2D do Unity
 - 👀 A API deve funcionar até 10 de abril de 2021, pois depende de um SQL Server rodando em Máquina Virtual Azure.
 
 ---
