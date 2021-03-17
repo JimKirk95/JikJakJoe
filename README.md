@@ -31,6 +31,8 @@ As 🌕 podem ser usadas para liberar novos "_skins_" Os e Xs.
 Neste demo, cada O ou X custa apenas 1 🌕 e existem 9 "_skins_" de cada para serem liberados.
 Ou seja, com 18 🌕 (que podem ser obtidas com 6 vitórias) é possível desbloquear todas as "_skins_".
 
+As "_skins_" utilizadas são do pixabay: https://pixabay.com/
+
 ---
 
 - 👀 Projeto desenvolvido em Unity 2020.2.2f1 com C#
